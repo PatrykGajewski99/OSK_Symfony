@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Organizations;
 
 use App\Entity\Organization;
 use App\Form\OrganizationType;
 use App\Service\JsonResponseTransformer;
 use App\Service\ViolationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Attributes as OA;
-use Nelmio\ApiDocBundle\Annotation\Model;
 
-final class OrganizationController extends AbstractController
+final class CreateOrganizationController extends AbstractController
 {
     public function __construct(private readonly ViolationService $violationService, private readonly JsonResponseTransformer $jsonResponseTransformer)
     {
