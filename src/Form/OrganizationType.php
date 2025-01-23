@@ -33,10 +33,15 @@ class OrganizationType extends AbstractType
             ->add('flat_number', TextType::class)
             ->add('nip', TextType::class, [
                 'constraints' => [
-                    new ValidNip()
+                    new ValidNip(),
+                    new Assert\NotBlank()
                 ]
             ])
-            ->add('country', TextType::class);
+            ->add('country', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank()
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

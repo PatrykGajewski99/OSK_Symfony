@@ -8,27 +8,37 @@ use App\Service\JsonResponseTransformer;
 use App\Service\ViolationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
-final class CreateOrganizationController extends AbstractController
+final class UpdateOrganizationController extends AbstractController
 {
-    public function __construct(private readonly ViolationService $violationService, private readonly JsonResponseTransformer $jsonResponseTransformer)
-    {
+    public function __construct(
+        private readonly JsonResponseTransformer $jsonResponseTransformer,
+        private readonly ViolationService $violationService
+    ) {
     }
 
-    #[OA\Post(
-        path: '/api/organization/create',
-        description: 'Creates a new organization',
-        summary: 'Create new organization',
+    #[OA\Patch(
+        path: '/api/organization/{organization}/update',
+        description: 'Update particular organization',
+        summary: 'Update particular organization',
         tags: ['Organization']
     )]
-    #[OA\RequestBody(
+    #[OA\Parameter(
+        name: 'organization',
+        description: 'Organization id',
+        in: 'path',
         required: true,
+        schema: new OA\Schema(type: 'string', format: 'uuid'),
+        example: '01948f1c-4b42-7df0-92e1-dc763d765bcc'
+    )]
+    #[OA\RequestBody(
+        required: false,
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(property: 'name', type: 'string', description: 'Name of the organization', example: 'Example Organization Ltd.'),
@@ -41,24 +51,22 @@ final class CreateOrganizationController extends AbstractController
         )
     )]
     #[OA\Response(
-        response: 201,
-        description: 'Organization successfully created',
+        response: 204,
+        description: 'Organization updated successfully',
         content: new OA\JsonContent(ref: new Model(type: Organization::class))
     )]
-    #[Route('/organization/create', name: 'create_organization', methods: ['POST'])]
-    public function __invoke(Request $request, EntityManagerInterface $entityManager): JsonResponse|Response
+    #[Route('/organization/{organization}/update', name: 'update_organization', methods: ['PATCH'])]
+    public function __invoke(Request $request, Organization $organization, EntityManagerInterface $entityManager): JsonResponse|Response
     {
-        $form = $this->createForm(OrganizationType::class);
+        $form = $this->createForm(OrganizationType::class, $organization);
 
         $form->submit(json_decode($request->getContent(), true));
 
         if ($form->isValid()) {
-            $organization = $form->getData();
-            
             $entityManager->persist($organization);
             $entityManager->flush();
 
-            return $this->jsonResponseTransformer->create($organization);
+            return $this->jsonResponseTransformer->update($organization, 201);
         }
 
         return new JsonResponse([

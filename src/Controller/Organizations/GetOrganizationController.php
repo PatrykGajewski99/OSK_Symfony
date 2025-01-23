@@ -27,7 +27,7 @@ final class GetOrganizationController extends AbstractController
         description: 'Organization ID',
         in: 'path',
         required: true,
-        schema: new OA\Schema(type: 'string'),
+        schema: new OA\Schema(type: 'string', format: 'uuid'),
         example: '01948f1c-4b42-7df0-92e1-dc763d765bcc'
     )]
     #[OA\Response(
@@ -40,6 +40,6 @@ final class GetOrganizationController extends AbstractController
     #[Route('/organization/{organization}', name: 'get_organization', methods: ['Get'])]
     public function __invoke(Organization $organization): Response
     {
-        return $this->jsonResponseTransformer->create($organization);
+        return $this->jsonResponseTransformer->get($organization);
     }
 }
