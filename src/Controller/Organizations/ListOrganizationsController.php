@@ -21,7 +21,6 @@ final class ListOrganizationsController extends AbstractController
     }
 
     #[OA\Get(
-        path: '/api/organizations',
         description: 'List existing organizations',
         summary: 'List existing organizations',
         tags: ['Organization']

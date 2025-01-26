@@ -17,7 +17,6 @@ final class GetOrganizationController extends AbstractController
     }
 
     #[OA\Get(
-        path: '/api/organization/{organization}',
         description: 'Get particular organization',
         summary: 'Get particular organization',
         tags: ['Organization']

@@ -24,7 +24,6 @@ final class UpdateOrganizationController extends AbstractController
     }
 
     #[OA\Patch(
-        path: '/api/organization/{organization}/update',
         description: 'Update particular organization',
         summary: 'Update particular organization',
         tags: ['Organization']

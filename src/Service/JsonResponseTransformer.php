@@ -21,7 +21,7 @@ final class JsonResponseTransformer
         );
     }
 
-    public function get(object $data, int $status = 200, array $headers = []): Response
+    public function get(object|array $data, int $status = 200, array $headers = []): Response
     {
         return new Response(
             $this->serializer->serialize($data, JsonEncoder::FORMAT),

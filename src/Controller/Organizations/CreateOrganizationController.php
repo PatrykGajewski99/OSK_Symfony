@@ -22,7 +22,6 @@ final class CreateOrganizationController extends AbstractController
     }
 
     #[OA\Post(
-        path: '/api/organization/create',
         description: 'Creates a new organization',
         summary: 'Create new organization',
         tags: ['Organization']
