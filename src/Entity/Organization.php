@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrganizationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Uid\Uuid;
@@ -49,6 +51,14 @@ class Organization
     #[ORM\Column(type: 'datetime')]
     #[OA\Property(description: 'Last update timestamp', example: '2024-03-19T10:00:00+00:00')]
     private ?\DateTimeInterface $updated_at = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'organizations')]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?Uuid
     {
@@ -150,5 +160,29 @@ class Organization
     public function setUpdatedAt(): void
     {
         $this->updated_at = new \DateTime();
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeOrganization($this);
+        }
+
+        return $this;
     }
 }
