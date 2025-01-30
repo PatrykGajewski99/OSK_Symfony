@@ -16,8 +16,8 @@ final class OrganizationFactory extends PersistentProxyObjectFactory
     {
         return [
             'country'       => self::faker()->century(),
-            'house_number'  => self::faker()->buildingNumber(),
-            'flat_number'   => self::faker()->buildingNumber(),
+            'houseNumber'   => self::faker()->buildingNumber(),
+            'flatNumber'    => self::faker()->buildingNumber(),
             'name'          => self::faker()->name(),
             'nip'           => '1187859152',
             'street'        => self::faker()->streetName(),

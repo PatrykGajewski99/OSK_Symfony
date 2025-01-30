@@ -38,6 +38,6 @@ final class ListOrganizationsController extends AbstractController
     {
         $organizations = $this->organizationRepository->findAll();
 
-        return $this->jsonResponseTransformer->get($organizations);
+        return $this->jsonResponseTransformer->get($organizations, groups: ['organization:read'] );
     }
 }

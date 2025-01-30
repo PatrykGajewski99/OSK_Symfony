@@ -17,7 +17,7 @@ final class Version20250127211018 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE "users" (id UUID NOT NULL, first_name VARCHAR(64) NOT NULL, second_name VARCHAR(64) DEFAULT NULL, last_name VARCHAR(64) NOT NULL, email VARCHAR(255) NOT NULL, pesel VARCHAR(11) NOT NULL, password VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "users" (id UUID NOT NULL, first_name VARCHAR(64) NOT NULL, second_name VARCHAR(64) DEFAULT NULL, last_name VARCHAR(64) NOT NULL, email VARCHAR(255) NOT NULL, pesel VARCHAR(64) NOT NULL, password VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX idx_user_email ON "users" (email)');
         $this->addSql('CREATE INDEX idx_user_pesel ON "users" (pesel)');
         $this->addSql('COMMENT ON COLUMN "users".id IS \'(DC2Type:uuid)\'');

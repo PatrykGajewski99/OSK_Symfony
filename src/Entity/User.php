@@ -6,56 +6,73 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Uid\Uuid;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`users`')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Index(name: 'idx_user_email', columns: ['email'])]
 #[ORM\Index(name: 'idx_user_pesel', columns: ['pesel'])]
-class User
+#[UniqueEntity(['email'])]
+class User implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['user:read', 'organization:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 64)]
     #[OA\Property(description: 'User first name', example: 'John')]
-    private ?string $first_name = null;
+    #[Groups(['user:read', 'organization:read'])]
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 64, nullable: true)]
     #[OA\Property(description: 'User second name', example: 'Robert')]
-    private ?string $second_name = null;
+    #[Groups(['user:read', 'organization:read'])]
+    private ?string $secondName = null;
 
     #[ORM\Column(length: 64)]
     #[OA\Property(description: 'User last name', example: 'Smith')]
-    private ?string $last_name = null;
+    #[Groups(['user:read', 'organization:read'])]
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
     #[OA\Property(description: 'User email address', example: 'john.smith@example.com')]
+    #[Groups(['user:read', 'organization:read'])]
     private ?string $email = null;
 
-    #[ORM\Column(length: 11)]
+    #[Ignore]
+    #[ORM\Column(length: 64)]
     #[OA\Property(description: 'User PESEL number', example: '12345678901')]
     private ?string $pesel = null;
 
+    #[Ignore]
     #[ORM\Column(length: 255)]
     #[OA\Property(description: 'User password', example: '123Qwerty!')]
     private ?string $password = null;
 
+    #[MaxDepth(1)]
     #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'users')]
+    #[Groups(['user:read', 'organization:read'])]
     private Collection $organizations;
 
     #[ORM\Column(type: 'datetime')]
     #[OA\Property(description: 'Creation timestamp', example: '2024-03-19T10:00:00+00:00')]
-    private ?\DateTimeInterface $created_at = null;
+    #[Groups(['user:read', 'organization:read'])]
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: 'datetime')]
     #[OA\Property(description: 'Last update timestamp', example: '2024-03-19T10:00:00+00:00')]
-    private ?\DateTimeInterface $updated_at = null;
+    #[Groups(['user:read'])]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
     {
@@ -69,36 +86,36 @@ class User
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setFirstName(string $firstName): static
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getSecondName(): ?string
     {
-        return $this->second_name;
+        return $this->secondName;
     }
 
-    public function setSecondName(?string $second_name): static
+    public function setSecondName(?string $secondName): static
     {
-        $this->second_name = $second_name;
+        $this->secondName = $secondName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -162,27 +179,28 @@ class User
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     #[ORM\PrePersist]
     #[OA\Property(type: 'string', format: 'date-time')]
     public function setCreatedAt(): void
     {
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
 
         $this->setUpdatedAt();
     }
+
 
     #[ORM\PreUpdate]
     #[OA\Property(type: 'string', format: 'date-time')]
     public function setUpdatedAt(): void
     {
-        $this->updated_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 }

@@ -25,12 +25,12 @@ class OrganizationType extends AbstractType
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('house_number', TextType::class, [
+            ->add('houseNumber', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank()
                 ]
             ])
-            ->add('flat_number', TextType::class)
+            ->add('flatNumber', TextType::class)
             ->add('nip', TextType::class, [
                 'constraints' => [
                     new ValidNip(),

@@ -7,52 +7,67 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ORM\Table(name: 'organizations')]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('nip')]
 class Organization
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['organization:read', 'user:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[OA\Property(description: 'Name of the organization', example: 'Example Organization Ltd.')]
+    #[Groups(['organization:read', 'user:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 128)]
     #[OA\Property(description: 'Street name', example: 'Main Street')]
+    #[Groups(['organization:read', 'user:read'])]
     private ?string $street = null;
 
     #[ORM\Column(length: 16)]
     #[OA\Property(description: 'House number', example: '123')]
-    private ?string $house_number = null;
+    #[Groups(['organization:read', 'user:read'])]
+    private ?string $houseNumber = null;
 
     #[ORM\Column(length: 16, nullable: true)]
     #[OA\Property(description: 'Flat number (optional)', example: '45', nullable: true)]
-    private ?string $flat_number = null;
+    #[Groups(['organization:read', 'user:read'])]
+    private ?string $flatNumber = null;
 
     #[ORM\Column(length: 32)]
     #[OA\Property(description: 'Tax identification number', example: '1234567890')]
+    #[Groups(['organization:read', 'user:read'])]
     private ?string $nip = null;
 
     #[ORM\Column(length: 128)]
     #[OA\Property(description: 'Country name', example: 'Poland')]
+    #[Groups(['organization:read', 'user:read'])]
     private ?string $country = null;
 
     #[ORM\Column(type: 'datetime')]
     #[OA\Property(description: 'Creation timestamp', example: '2024-03-19T10:00:00+00:00')]
-    private ?\DateTimeInterface $created_at = null;
+    #[Groups(['organization:read', 'user:read'])]
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: 'datetime')]
     #[OA\Property(description: 'Last update timestamp', example: '2024-03-19T10:00:00+00:00')]
-    private ?\DateTimeInterface $updated_at = null;
+    #[Groups(['organization:read', 'user:read'])]
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'organizations')]
+    #[MaxDepth(1)]
+    #[Groups(['organization:read'])]
     private Collection $users;
 
     public function __construct()
@@ -91,24 +106,24 @@ class Organization
 
     public function getHouseNumber(): ?string
     {
-        return $this->house_number;
+        return $this->houseNumber;
     }
 
-    public function setHouseNumber(string $house_number): static
+    public function setHouseNumber(string $houseNumber): static
     {
-        $this->house_number = $house_number;
+        $this->houseNumber = $houseNumber;
 
         return $this;
     }
 
     public function getFlatNumber(): ?string
     {
-        return $this->flat_number;
+        return $this->flatNumber;
     }
 
-    public function setFlatNumber(?string $flat_number): static
+    public function setFlatNumber(?string $flatNumber): static
     {
-        $this->flat_number = $flat_number;
+        $this->flatNumber = $flatNumber;
 
         return $this;
     }
@@ -139,19 +154,19 @@ class Organization
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     #[ORM\PrePersist]
     #[OA\Property(type: 'string', format: 'date-time')]
     public function setCreatedAt(): void
     {
-        $this->created_at = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->setUpdatedAt();
     }
 
@@ -159,7 +174,7 @@ class Organization
     #[OA\Property(type: 'string', format: 'date-time')]
     public function setUpdatedAt(): void
     {
-        $this->updated_at = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getUsers(): Collection

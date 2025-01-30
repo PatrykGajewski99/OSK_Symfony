@@ -8,9 +8,9 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
 final class ValidNip extends Constraint
 {
-    public string $invalidCharactersMessage = 'The NIP "{{ value }}" contains invalid characters: it can only contain numbers.';
-    public string $invalidLengthMessage = 'The NIP must be exactly 10 digits long. Got: {{ value }}';
-    public string $invalidChecksumMessage = 'The NIP "{{ value }}" is invalid - checksum verification failed.';
+    public string $invalidCharactersMessage = 'nip.invalid_characters';
+    public string $invalidLengthMessage = 'nip.invalid_length';
+    public string $invalidChecksumMessage = 'nip.invalid_checksum';
 
     public function __construct(public string $mode = 'strict', ?array $groups = null, mixed $payload = null)
     {

@@ -30,7 +30,7 @@ class AddOrganizationTest extends WebTestCase
         $data = [
             'name'          => 'Aos Company',
             'street'        => 'Loyals street',
-            'house_number'  => '12',
+            'houseNumber'   => '12',
             'nip'           => '3943851138',
             'country'       => 'Poland',
         ];
@@ -60,7 +60,7 @@ class AddOrganizationTest extends WebTestCase
         $data = [
             'name'          => 'Aos Company',
             'street'        => 'Loyals street',
-            'house_number'  => '12',
+            'houseNumber'   => '12',
             'nip'           => '12312312311',
             'country'       => 'Poland',
         ];

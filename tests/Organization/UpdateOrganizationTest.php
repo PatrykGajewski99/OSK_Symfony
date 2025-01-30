@@ -36,8 +36,8 @@ class UpdateOrganizationTest extends WebTestCase
         $this->client->request('PATCH',"/api/organization/{$organization->getId()}/update", content: json_encode([
                 'name'         => 'Updated company name',
                 'street'       => $organization->getStreet(),
-                'house_number' => $organization->getHouseNumber(),
-                'flat_number'  => $organization->getFlatNumber(),
+                'houseNumber'  => $organization->getHouseNumber(),
+                'flatNumber'   => $organization->getFlatNumber(),
                 'nip'          => $organization->getNip(),
                 'country'      => $organization->getCountry(),
             ])
@@ -58,8 +58,8 @@ class UpdateOrganizationTest extends WebTestCase
         $this->client->request('PATCH',"/api/organization/{$organization->getId()}/update", content: json_encode([
                 'name'         => $organization->getName(),
                 'street'       => $organization->getStreet(),
-                'house_number' => $organization->getHouseNumber(),
-                'flat_number'  => $organization->getFlatNumber(),
+                'houseNumber'  => $organization->getHouseNumber(),
+                'flatNumber'   => $organization->getFlatNumber(),
                 'nip'          => '1231231233',
                 'country'      => $organization->getCountry(),
             ])

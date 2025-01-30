@@ -1,0 +1,10 @@
+nip:
+  invalid_characters: 'The NIP "{{ value }}" contains invalid characters: it can only contain numbers.'
+  invalid_length: 'The NIP must be exactly 10 digits long. Got: {{ value }}.'
+  invalid_checksum: 'The NIP "{{ value }}" is invalid - checksum verification failed.'
+organization:
+  not_exist: 'Organization with ID {{ id }} does not exist'
+pesel:
+  invalid_signs: 'Pesel should contains only digits.'
+  incorrect_pesel: 'Pesel is incorrect.'
+  incorrect_number_of_signs: 'Pesel contains incorrect number of digits.'

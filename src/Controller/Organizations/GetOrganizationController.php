@@ -39,6 +39,6 @@ final class GetOrganizationController extends AbstractController
     #[Route('/organization/{organization}', name: 'get_organization', methods: ['Get'])]
     public function __invoke(Organization $organization): Response
     {
-        return $this->jsonResponseTransformer->get($organization);
+        return $this->jsonResponseTransformer->get($organization, groups: ['organization:read']);
     }
 }

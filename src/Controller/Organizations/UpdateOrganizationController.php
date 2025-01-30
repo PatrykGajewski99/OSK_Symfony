@@ -42,8 +42,8 @@ final class UpdateOrganizationController extends AbstractController
             properties: [
                 new OA\Property(property: 'name', type: 'string', description: 'Name of the organization', example: 'Example Organization Ltd.'),
                 new OA\Property(property: 'street', type: 'string', description: 'Street name', example: 'Main Street'),
-                new OA\Property(property: 'house_number', type: 'string', description: 'House number', example: '123'),
-                new OA\Property(property: 'flat_number', type: 'string', description: 'Flat number (optional)', example: '45', nullable: true),
+                new OA\Property(property: 'houseNumber', type: 'string', description: 'House number', example: '123'),
+                new OA\Property(property: 'flatNumber', type: 'string', description: 'Flat number (optional)', example: '45', nullable: true),
                 new OA\Property(property: 'nip', type: 'string', description: 'Tax identification number', example: '1234567890'),
                 new OA\Property(property: 'country', type: 'string', description: 'Country name', example: 'Poland')
             ]
@@ -65,7 +65,7 @@ final class UpdateOrganizationController extends AbstractController
             $entityManager->persist($organization);
             $entityManager->flush();
 
-            return $this->jsonResponseTransformer->update($organization, 201);
+            return $this->jsonResponseTransformer->update($organization, 201, groups: ['organization:read']);
         }
 
         return new JsonResponse([
