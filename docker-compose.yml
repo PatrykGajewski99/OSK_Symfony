@@ -13,6 +13,7 @@ services:
       - symfony_network
     depends_on:
       - database
+      - test_database
 
   database:
     image: postgres:16-alpine
@@ -25,6 +26,20 @@ services:
       - database_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - symfony_network
+
+  test_database:
+    image: postgres:16-alpine
+    container_name: symfony_test_db
+    environment:
+      POSTGRES_DB: osk_symfony_test
+      POSTGRES_USER: osk_symfony
+      POSTGRES_PASSWORD: osk_symfony
+    volumes:
+      - test_database_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
     networks:
       - symfony_network
 
@@ -47,4 +62,6 @@ networks:
 
 volumes:
   database_data:
+    driver: local
+  test_database_data:
     driver: local
