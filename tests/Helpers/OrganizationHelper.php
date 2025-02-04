@@ -9,6 +9,6 @@ class OrganizationHelper
 {
     public static function create(): Organization
     {
-        return OrganizationFactory::createOne();
+        return OrganizationFactory::createOne()->_real();
     }
 }
