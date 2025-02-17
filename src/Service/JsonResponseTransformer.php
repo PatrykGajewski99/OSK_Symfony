@@ -39,7 +39,7 @@ final class JsonResponseTransformer
         );
     }
 
-    public function update(object $data, int $status = 204, array $headers = [], array $groups = []): Response
+    public function update(object $data, int $status = 200, array $headers = [], array $groups = []): Response
     {
         return new Response(
             $this->serializer->serialize($data, JsonEncoder::FORMAT, [

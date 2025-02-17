@@ -35,15 +35,10 @@ class UpdateOrganizationTest extends WebTestCase
 
         $this->client->request('PATCH',"/api/organization/{$organization->getId()}/update", content: json_encode([
                 'name'         => 'Updated company name',
-                'street'       => $organization->getStreet(),
-                'houseNumber'  => $organization->getHouseNumber(),
-                'flatNumber'   => $organization->getFlatNumber(),
-                'nip'          => $organization->getNip(),
-                'country'      => $organization->getCountry(),
             ])
         );
 
-        $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals('Updated company name', $organization->getName());
     }
 

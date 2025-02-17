@@ -50,7 +50,7 @@ final class UpdateOrganizationController extends AbstractController
         )
     )]
     #[OA\Response(
-        response: 204,
+        response: 200,
         description: 'Organization updated successfully',
         content: new OA\JsonContent(ref: new Model(type: Organization::class))
     )]
@@ -59,13 +59,13 @@ final class UpdateOrganizationController extends AbstractController
     {
         $form = $this->createForm(OrganizationType::class, $organization);
 
-        $form->submit(json_decode($request->getContent(), true));
+        $form->submit(json_decode($request->getContent(), true), false);
 
         if ($form->isValid()) {
             $entityManager->persist($organization);
             $entityManager->flush();
 
-            return $this->jsonResponseTransformer->update($organization, 201, groups: ['organization:read']);
+            return $this->jsonResponseTransformer->update($organization, groups: ['organization:read']);
         }
 
         return new JsonResponse([
