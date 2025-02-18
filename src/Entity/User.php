@@ -74,9 +74,16 @@ class User implements PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?\DateTimeInterface $updatedAt = null;
 
+    /**
+     * @var Collection<int, Role>
+     */
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
+    private Collection $roles;
+
     public function __construct()
     {
         $this->organizations = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -202,5 +209,29 @@ class User implements PasswordAuthenticatedUserInterface
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    public function addRole(Role $role): static
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): static
+    {
+        $this->roles->removeElement($role);
+
+        return $this;
     }
 }
