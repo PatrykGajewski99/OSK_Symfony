@@ -11,7 +11,7 @@ class ListOrganizationsTest extends WebTestCase
 {
     use ResetDatabase;
 
-    protected KernelBrowser $client;
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {

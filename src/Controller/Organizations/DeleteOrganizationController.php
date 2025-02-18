@@ -35,6 +35,6 @@ final class DeleteOrganizationController extends AbstractController
 
         $entityManager->flush();
 
-        return new JsonResponse([], 200);
+        return new JsonResponse([], 204);
     }
 }

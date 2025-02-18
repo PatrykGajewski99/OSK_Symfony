@@ -15,9 +15,9 @@ class UpdateUserTest extends WebTestCase
 {
     use ResetDatabase;
 
-    protected KernelBrowser $client;
-    protected EntityManager $entityManager;
-    protected User $user;
+    private KernelBrowser $client;
+    private EntityManager $entityManager;
+    private User $user;
 
     protected function setUp(): void
     {

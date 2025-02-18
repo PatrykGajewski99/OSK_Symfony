@@ -12,8 +12,8 @@ class AddOrganizationTest extends WebTestCase
 {
     use ResetDatabase;
 
-    protected KernelBrowser $client;
-    protected EntityManager $entityManager;
+    private KernelBrowser $client;
+    private EntityManager $entityManager;
 
     protected function setUp(): void
     {
